@@ -10,15 +10,15 @@
     <h2>Formulario de Agente Secreto</h2>
     <?php if(isset($error)) echo "<p style='color: red;'>$error</p>"; ?>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label for="nombre">Nombre:</label><br>
+        <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required><br><br>
-        <label for="agente_id">Agente ID:</label><br>
+        <label for="agente_id">Agente ID:</label>
         <input type="text" id="agente_id" name="agente_id" required><br><br>
-        <label for="departamento_id">Departamento ID:</label><br>
+        <label for="departamento_id">Departamento ID:</label>
         <input type="text" id="departamento_id" name="departamento_id" required><br><br>
-        <label for="numero_misiones">Número de Misiones:</label><br>
+        <label for="numero_misiones">Número de Misiones:</label>
         <input type="number" id="numero_misiones" name="numero_misiones" required><br><br>
-        <label for="descripcion_mision">Descripción de la Nueva Misión:</label><br>
+        <label for="descripcion_mision">Descripción de la Nueva Misión:</label>
         <textarea id="descripcion_mision" name="descripcion_mision" required></textarea><br><br>
         <input type="submit" value="Enviar">
     </form>
@@ -30,7 +30,7 @@
 session_start();
 
 // Database connection
-$pdo = new PDO('mysql:host=localhost;port=3308;dbname=lab07', 'root', '');
+$pdo = new PDO('mysql:host=localhost;port=3306;dbname=agentes', 'root', '');
 
 // Function to validate user input
 function validateInput($data) {
