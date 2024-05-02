@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>Formulario de Agente Secreto</h2>
+    <h2>Datos de  la mision </h2>
     <?php if(isset($error)) echo "<p style='color: red;'>$error</p>"; ?>
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <label for="nombre">Nombre:</label>
