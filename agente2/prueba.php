@@ -4,7 +4,7 @@
 session_start();
 
 // Database connection
-//Modified
+//Modifiedd
 $pdo = new PDO(
     'mysql:host=localhost;port=3308;dbname=lab07', 'root', '');
 // Function to validate user input
