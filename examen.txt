@@ -1,0 +1,244 @@
+[2:29 p. m., 3/5/2024] Alfredo: <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Reservas de Canchas</title>
+</head>
+<body>
+    <h2>Lista de Reservas de Canchas</h2>
+    <a class="button" href="formulario_reserva.html">Agregar Nueva Reserva</a>
+    <table>
+        <tr>
+            <th>ID de Reserva</th>
+            <th>ID de Usuario</th>
+            <th>ID de Cancha</th>
+            <th>Fecha de Reserva</th>
+            <th>Hora de Inicio</th>
+            <th>Hora de Fin</th>
+            <th>Acciones</th>
+        </tr>
+        <?php
+        // Datos de conexión a la base de datos
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "reserva_canchas";
+
+        // Crear conexión
+        $conn = new mysqli($servername, $username, $password, $database);
+
+        // Verificar conexión
+        if ($conn->connect_error) {
+            die("Conexión fallida: " . $conn->connect_error);
+        }
+
+        // Obtener todas las reservas de la base de datos
+        $sql = "SELECT * FROM reservas";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            // Mostrar cada reserva en una fila de la tabla
+            while($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $row["id"] . "</td>";
+                echo "<td>" . $row["id_usuario"] . "</td>";
+                echo "<td>" . $row["id_cancha"] . "</td>";
+                echo "<td>" . $row["fecha_reserva"] . "</td>";
+                echo "<td>" . $row["hora_inicio"] . "</td>";
+                echo "<td>" . $row["hora_fin"] . "</td>";
+                echo "<td><a class='button' href='editar_reserva.php?id=" . $row["id"] . "'>Editar</a>";
+                echo "<a class='button' href='eliminar_reserva.php?id=" . $row["id"] . "'>Eliminar</a></td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='7'>No se encontraron reservas</td></tr>";
+        }
+        $conn->close();
+        ?>
+    </table>
+</body>
+</html>
+---------------------------------------------------------------------------------------------------------------------------
+[2:30 p. m., 3/5/2024] Alfredo: <?php
+$servername = "localhost";
+$username = "tu_usuario";
+$password = "tu_contraseña";
+$dbname = "reserva_canchas"; 
+
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    die("La conexión falló: " . $conn->connect_error);
+}
+
+// Obtener datos del formulario
+$id_usuario = $_POST['id_usuario'];
+$id_cancha = $_POST['id_cancha'];
+$fecha_reserva = $_POST['fecha_reserva'];
+$hora_inicio = $_POST['hora_inicio'];
+$hora_fin = $_POST['hora_fin'];
+
+// Crear y ejecutar consulta SQL para insertar una nueva reserva
+$sql = "INSERT INTO reservas (id_usuario, id_cancha, fecha_reserva, hora_inicio, hora_fin)
+VALUES ('$id_usuario', '$id_cancha', '$fecha_reserva', '$hora_inicio', '$hora_fin')";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Nueva reserva agregada correctamente. <br>";
+    echo "<a href='lista_reservas.php'>Ir a la lista de reservas</a>";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+// Cerrar conexión
+$conn->close();
+?>
+---------------------------------------------------------------------------------------------------------------------------
+[2:31 p. m., 3/5/2024] Alfredo: <?php
+$servername = "localhost";
+$username = "tu_usuario";
+$password = "tu_contraseña";
+$dbname = "reserva_canchas"; 
+
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    die("La conexión falló: " . $conn->connect_error);
+}
+
+// Obtener el ID de la reserva a eliminar desde la URL
+$id_reserva = $_GET['id'];
+
+// Crear y ejecutar consulta SQL para eliminar la reserva
+$sql = "DELETE FROM reservas WHERE id='$id_reserva'";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Reserva eliminada correctamente. <br>";
+    echo "<a href='lista_reservas.php'>Ir a la lista de reservas</a>";
+} else {
+    echo "Error al eliminar la reserva: " . $conn->error;
+}
+
+// Cerrar conexión
+$conn->close();
+?>
+---------------------------------------------------------------------------------------------------------------------------
+[2:31 p. m., 3/5/2024] Alfredo: <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Reserva</title>
+    <link rel="stylesheet" href="editar_reserva.css">
+</head>
+<body>
+    <h2>Editar Reserva</h2>
+    <?php
+    $servername = "localhost";
+    $username = "tu_usuario";
+    $password = "tu_contraseña";
+    $dbname = "reserva_canchas"; 
+
+    // Crear conexión
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    // Verificar conexión
+    if ($conn->connect_error) {
+        die("La conexión falló: " . $conn->connect_error);
+    }
+
+    // Obtener el ID de la reserva a editar desde la URL
+    $id_reserva = $_GET['id'];
+
+    // Crear y ejecutar consulta SQL para seleccionar la reserva
+    $sql = "SELECT * FROM reservas WHERE id='$id_reserva'";
+    $result = $conn->query($sql);
+
+    // Verificar si se encontró la reserva
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        ?>
+        <form action="actualizar_reserva.php" method="post">
+            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+            ID de Usuario: <input type="text" name="id_usuario" value="<?php echo $row['id_usuario']; ?>"><br>
+            ID de Cancha: <input type="text" name="id_cancha" value="<?php echo $row['id_cancha']; ?>"><br>
+            Fecha de Reserva: <input type="date" name="fecha_reserva" value="<?php echo $row['fecha_reserva']; ?>"><br>
+            Hora de Inicio: <input type="time" name="hora_inicio" value="<?php echo $row['hora_inicio']; ?>"><br>
+            Hora de Fin: <input type="time" name="hora_fin" value="<?php echo $row['hora_fin']; ?>"><br>
+            <input type="submit" value="Actualizar">
+        </form>
+        <?php
+    } else {
+        echo "No se encontró la reserva.";
+    }
+
+    // Cerrar conexión
+    $conn->close();
+    ?>
+</body>
+</html>
+---------------------------------------------------------------------------------------------------------------------------
+[2:32 p. m., 3/5/2024] Alfredo: <?php
+$servername = "localhost";
+$username = "tu_usuario";
+$password = "tu_contraseña";
+$dbname = "reserva_canchas"; 
+
+// Crear conexión
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Verificar conexión
+if ($conn->connect_error) {
+    die("La conexión falló: " . $conn->connect_error);
+}
+
+// Obtener los datos del formulario
+$id = $_POST['id'];
+$id_usuario = $_POST['id_usuario'];
+$id_cancha = $_POST['id_cancha'];
+$fecha_reserva = $_POST['fecha_reserva'];
+$hora_inicio = $_POST['hora_inicio'];
+$hora_fin = $_POST['hora_fin'];
+
+// Crear y ejecutar consulta SQL para actualizar la reserva
+$sql = "UPDATE reservas SET id_usuario='$id_usuario', id_cancha='$id_cancha', fecha_reserva='$fecha_reserva', hora_inicio='$hora_inicio', hora_fin='$hora_fin' WHERE id='$id'";
+
+if ($conn->query($sql) === TRUE) {
+    echo "Reserva actualizada correctamente.";
+    echo "<a href='lista_reservas.php'>Ir a la lista de reservas</a>";
+} else {
+    echo "Error al actualizar la reserva: " . $conn->error;
+}
+
+// Cerrar conexión
+$conn->close();
+?>
+[2:33 p. m., 3/5/2024] Alfredo: <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Reserva de Cancha</title>
+    <link rel="stylesheet" href="formulario_reserva.css">
+</head>
+<body>
+    <h2>Agregar Nueva Reserva de Cancha</h2>
+    <form action="agregar_reserva.php" method="post">
+        <label for="id_usuario">ID de Usuario:</label><br>
+        <input type="number" id="id_usuario" name="id_usuario" required><br>
+        <label for="id_cancha">ID de Cancha:</label><br>
+        <input type="number" id="id_cancha" name="id_cancha" required><br>
+        <label for="fecha_reserva">Fecha de Reserva:</label><br>
+        <input type="date" id="fecha_reserva" name="fecha_reserva" required><br>
+        <label for="hora_inicio">Hora de Inicio:</label><br>
+        <input type="time" id="hora_inicio" name="hora_inicio" required><br>
+        <label for="hora_fin">Hora de Fin:</label><br>
+        <input type="time" id="hora_fin" name="hora_fin" required><br><br>
+        <input type="submit" value="Agregar Reserva">
+    </form>
+</body>
+</html>
