@@ -1,0 +1,28 @@
+.arbol-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.nivel-1, .nivel-2, .nivel-3 {
+    display: flex;
+}
+
+.nivel-1 {
+    margin-top: 20px; /* Espacio superior para la raíz */
+}
+
+.nivel-2 {
+    margin-top: 10px; /* Espacio entre los niveles 1 y 2 */
+}
+
+.nivel-3 {
+    margin-top: 10px; /* Espacio entre los niveles 2 y 3 */
+    margin-left: 50px; /* Ajuste para los nodos en el tercer nivel */
+}
+
+.recuadro {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 5px;
+}

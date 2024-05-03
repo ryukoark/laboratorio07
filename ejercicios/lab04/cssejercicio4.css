@@ -1,0 +1,27 @@
+.columna {
+    width: 30%;
+    float: left;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .columna {
+    width: 30%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
